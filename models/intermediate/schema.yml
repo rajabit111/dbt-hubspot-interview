@@ -1,0 +1,12 @@
+version: 2
+
+models:
+  - name: int_amenities
+    description: "Exploded list of amenities per listing"
+    columns:
+      - name: listing_id
+        tests:
+          - not_null
+      - name: amenity_name
+        tests:
+          - not_null
