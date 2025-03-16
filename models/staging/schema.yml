@@ -1,0 +1,30 @@
+version: 2
+
+sources:
+  - name: airbnb
+    database: DBT_DB  # Your Snowflake database
+    schema: DBT_SCHEMA  # Your Snowflake schema
+    tables:
+      - name: listings
+        description: "Airbnb property listings with host and price details"
+      - name: calendar
+        description: "Daily availability and pricing for Airbnb listings"
+      - name: generated_reviews
+        description: "Generated reviews and scores for Airbnb listings"
+      - name: amenities_change_log
+        description: "Tracks changes in amenities over time for each listing"
+models:
+  - name: stg_listings
+    description: "Standardized Airbnb listings data"
+    columns:
+      - name: listing_id
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_calendar
+    description: "Standardized Airbnb calendar data"
+    columns:
+      - name: listing_id
+        tests:
+          - not_null
