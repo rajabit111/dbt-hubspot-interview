@@ -2,11 +2,18 @@ version: 2
 
 models:
   - name: int_amenities
-    description: "Exploded list of amenities per listing"
+    description: "Splits Airbnb amenities into multiple rows"
     columns:
       - name: listing_id
         tests:
           - not_null
+          - relationships:
+              to: ref('stg_listings')
+              field: listing_id
       - name: amenity_name
         tests:
           - not_null
+          - dbt_expectations.expect_column_to_have_at_least_n_distinct_values:
+              n: 5  # ✅ Ensures every listing has at least 5 amenities
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              values: ['WiFi', 'Kitchen', 'Air Conditioning', 'TV', 'Heating', 'Pool']
